@@ -9,9 +9,15 @@ import SwiftUI
 
 @main
 struct PokerStatsApp: App {
+    private var storeModel = StoreModel()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationStack {
+                SessionsScreen()
+                    .environmentObject(storeModel)
+                    .navigationBarTitleDisplayMode(.inline)
+            }
         }
     }
 }
