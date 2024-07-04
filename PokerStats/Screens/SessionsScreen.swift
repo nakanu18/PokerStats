@@ -18,7 +18,8 @@ struct SessionsScreen: View {
             
             Section("History") {
                 ForEach(storeModel.sessions) { session in
-                    NavigationLink(destination: SessionDetailsScreen(session: session)) {
+                    let selectedSession = $storeModel.sessions[$storeModel.sessions.firstIndex(where: { $0.id == session.id })!]
+                    NavigationLink(destination: SessionDetailsScreen(session: selectedSession)) {
                         SessionCell(session: session)
                     }
                 }.onDelete { offsets in

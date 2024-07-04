@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SessionDetailsScreen: View {
-    let session: Session
+    @Binding var session: Session
     
     var body: some View {
         HStack {
@@ -21,7 +21,7 @@ struct SessionDetailsScreen: View {
 
 #Preview {
     NavigationStack {
-        SessionDetailsScreen(session: StoreModel.mockEmpty.sessions.first!)
+        SessionDetailsScreen(session: Binding.constant(StoreModel.mockEmpty.sessions.first!))
             .navigationBarTitleDisplayMode(.inline)
     }
 }
