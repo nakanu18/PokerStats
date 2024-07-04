@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SessionsScreen: View {
     @EnvironmentObject private var storeModel: StoreModel
+    @State private var showNewSessionSheet = false
     
     var body: some View {
         List {
@@ -26,8 +27,19 @@ struct SessionsScreen: View {
                     storeModel.sessions.remove(atOffsets: offsets)
                 }
             }
-        }
-        .navigationTitle("Sessions")
+        }.navigationTitle("Sessions")
+            .toolbar {
+                ToolbarItem(placement: .automatic) {
+                    Button("New Session") {
+                        showNewSessionSheet = true
+                    }
+                }
+            }
+            .sheet(isPresented: $showNewSessionSheet, content: {
+                Button("No Limit HoldEm") {
+                    showNewSessionSheet = false
+                }
+            })
     }
 }
 
