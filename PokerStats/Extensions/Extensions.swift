@@ -27,16 +27,16 @@ extension NumberFormatter {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         formatter.locale = Locale.current // Optional: Set to specific locale if needed
-        formatter.minimumFractionDigits = 2
-        formatter.maximumFractionDigits = 2
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 0
         return formatter
     }
 }
 
-extension Double {
+extension Int {
     func dollars() -> String {
         guard let val = NumberFormatter.dollarFormatter.string(from: self as NSNumber) else {
-            return "$0.00"
+            return "$0"
         }
         return val
     }

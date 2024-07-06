@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		FA41FF9A2C370FFC00713CD0 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA41FF992C370FFC00713CD0 /* Extensions.swift */; };
 		FA41FF9C2C371DF000713CD0 /* SessionDetailsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA41FF9B2C371DF000713CD0 /* SessionDetailsScreen.swift */; };
+		FA41FF9E2C38F0C300713CD0 /* NewSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA41FF9D2C38F0C300713CD0 /* NewSessionView.swift */; };
 		FA78F2862C364A8100A4ABA5 /* PokerStatsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA78F2852C364A8100A4ABA5 /* PokerStatsApp.swift */; };
 		FA78F28A2C364A8400A4ABA5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA78F2892C364A8400A4ABA5 /* Assets.xcassets */; };
 		FA78F28D2C364A8400A4ABA5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA78F28C2C364A8400A4ABA5 /* Preview Assets.xcassets */; };
@@ -19,6 +20,7 @@
 /* Begin PBXFileReference section */
 		FA41FF992C370FFC00713CD0 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		FA41FF9B2C371DF000713CD0 /* SessionDetailsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDetailsScreen.swift; sourceTree = "<group>"; };
+		FA41FF9D2C38F0C300713CD0 /* NewSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewSessionView.swift; sourceTree = "<group>"; };
 		FA78F2822C364A8100A4ABA5 /* PokerStats.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PokerStats.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA78F2852C364A8100A4ABA5 /* PokerStatsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokerStatsApp.swift; sourceTree = "<group>"; };
 		FA78F2892C364A8400A4ABA5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 			children = (
 				FA78F2972C36549A00A4ABA5 /* SessionsScreen.swift */,
 				FA41FF9B2C371DF000713CD0 /* SessionDetailsScreen.swift */,
+				FA41FF9D2C38F0C300713CD0 /* NewSessionView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -170,6 +173,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA41FF9E2C38F0C300713CD0 /* NewSessionView.swift in Sources */,
 				FA41FF9C2C371DF000713CD0 /* SessionDetailsScreen.swift in Sources */,
 				FA78F2862C364A8100A4ABA5 /* PokerStatsApp.swift in Sources */,
 				FA78F2982C36549A00A4ABA5 /* SessionsScreen.swift in Sources */,

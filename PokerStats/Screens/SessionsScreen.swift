@@ -36,9 +36,7 @@ struct SessionsScreen: View {
                 }
             }
             .sheet(isPresented: $showNewSessionSheet, content: {
-                Button("No Limit HoldEm") {
-                    showNewSessionSheet = false
-                }
+                NewSessionView(showNewSessionSheet: $showNewSessionSheet)
             })
     }
 }

@@ -9,23 +9,27 @@ import Foundation
 
 class StoreModel: ObservableObject {
     @Published var sessions: [Session]
+    @Published var favoriteGames: [FavoriteGame] = [
+        FavoriteGame(id: 0, name: "1-2 No Limit HoldEm", smallBind: 1, bigBlind: 2, tags: [.gameType("HoldEm"), .limitType("No Limit")]),
+        FavoriteGame(id: 1, name: "4-8 Limit HoldEm", smallBind: 4, bigBlind: 8, tags: [.gameType("HoldEm"), .limitType("Limit")]),
+    ]
     
     static var mockEmpty: StoreModel {
         let mock = StoreModel()
         let session0 = Session(id: 0,
-                              isDone: true,
-                              startDate: Date.now,
-                              totalMinutes: 105,
-                              stack: [200, 300],
-                              tags: ["HoldEm", "No Limit"],
-                              smallBlind: 1, bigBlind: 3)
+                               isDone: true,
+                               startDate: Date.now,
+                               totalMinutes: 105,
+                               stack: [.buyin: 200, .rebuy: 300],
+                               tags: [.gameType("HoldEm"), .limitType("No Limit"), .location("Rockford")],
+                               smallBlind: 1, bigBlind: 3)
         let session1 = Session(id: 1,
-                              isDone: true,
-                              startDate: Date.now,
-                              totalMinutes: 105,
-                              stack: [300, 5],
-                              tags: ["HoldEm", "No Limit"],
-                              smallBlind: 1, bigBlind: 3)
+                               isDone: true,
+                               startDate: Date.now,
+                               totalMinutes: 105,
+                               stack: [.buyin: 300],
+                               tags: [.gameType("HoldEm"), .limitType("No Limit"), .location("Horseshoe")],
+                               smallBlind: 1, bigBlind: 3)
         mock.sessions = [session0, session1]
         return mock
     }
@@ -35,40 +39,49 @@ class StoreModel: ObservableObject {
     }
 }
 
+enum StackEvent: Codable {
+    case buyin, rebuy, adjust
+}
+
+enum Tag: Codable {
+    case gameType(String), limitType(String), location(String), custom(String)
+}
+
 struct Session: Identifiable, Codable {
     let id: Int
     let isDone: Bool
     let startDate: Date
-    let totalMinutes: Double
-    let stack: [Double]
+    let totalMinutes: Int
+    let stack: [StackEvent: Int]
     
-    let tags: [String] // Tag can be anything - location, gameType, limitType
+    let tags: [Tag]
     let smallBlind: Int
     let bigBlind: Int
     
-    var initialBuyin: Double {
-        return stack.first ?? 0
+    var initialBuyin: Int {
+        return stack.first?.value ?? 0
     }
     
-    var totalStack: Double {
-        return stack.reduce(0) { partialResult, val in
-            return partialResult + val
-        }
+    var totalStack: Int {
+        return stack.reduce(0) { (result, keyValue) in
+            return result + keyValue.value
+      }
     }
     
-    var totalStackInBigBlinds: Double {
-        return totalStack / Double(bigBlind)
+    var totalStackInBigBlinds: Int {
+        return totalStack / bigBlind
     }
     
-    var profit: Double {
+    var profit: Int {
         return totalStack - initialBuyin
     }
 }
 
-enum GameType: Codable {
-    case holdEm, omaha
-}
-
-enum LimitType: Codable {
-    case limit, noLimit
+struct FavoriteGame: Identifiable, Codable {
+    let id: Int
+    let name: String
+    
+    let smallBind: Int
+    let bigBlind: Int
+    let tags: [Tag]
 }
