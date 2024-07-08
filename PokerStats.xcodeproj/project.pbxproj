@@ -15,6 +15,7 @@
 		FA78F28D2C364A8400A4ABA5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA78F28C2C364A8400A4ABA5 /* Preview Assets.xcassets */; };
 		FA78F2952C364AC800A4ABA5 /* StoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA78F2942C364AC800A4ABA5 /* StoreModel.swift */; };
 		FA78F2982C36549A00A4ABA5 /* SessionsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA78F2972C36549A00A4ABA5 /* SessionsScreen.swift */; };
+		FADF4AD42C3B6F0200D2498C /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADF4AD32C3B6F0200D2498C /* WebService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 		FA78F28C2C364A8400A4ABA5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		FA78F2942C364AC800A4ABA5 /* StoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreModel.swift; sourceTree = "<group>"; };
 		FA78F2972C36549A00A4ABA5 /* SessionsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionsScreen.swift; sourceTree = "<group>"; };
+		FADF4AD32C3B6F0200D2498C /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,8 +70,9 @@
 			isa = PBXGroup;
 			children = (
 				FA41FF982C370FDF00713CD0 /* Extensions */,
-				FA78F2962C36548A00A4ABA5 /* Screens */,
 				FA78F2932C364ABF00A4ABA5 /* Models */,
+				FA78F2962C36548A00A4ABA5 /* Screens */,
+				FADF4AD22C3B6EC600D2498C /* Services */,
 				FA78F2852C364A8100A4ABA5 /* PokerStatsApp.swift */,
 				FA78F2892C364A8400A4ABA5 /* Assets.xcassets */,
 				FA78F28B2C364A8400A4ABA5 /* Preview Content */,
@@ -101,6 +104,14 @@
 				FA41FF9D2C38F0C300713CD0 /* NewSessionView.swift */,
 			);
 			path = Screens;
+			sourceTree = "<group>";
+		};
+		FADF4AD22C3B6EC600D2498C /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				FADF4AD32C3B6F0200D2498C /* WebService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -174,6 +185,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA41FF9E2C38F0C300713CD0 /* NewSessionView.swift in Sources */,
+				FADF4AD42C3B6F0200D2498C /* WebService.swift in Sources */,
 				FA41FF9C2C371DF000713CD0 /* SessionDetailsScreen.swift in Sources */,
 				FA78F2862C364A8100A4ABA5 /* PokerStatsApp.swift in Sources */,
 				FA78F2982C36549A00A4ABA5 /* SessionsScreen.swift in Sources */,
