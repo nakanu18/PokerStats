@@ -10,6 +10,7 @@ import SwiftUI
 struct SessionsScreen: View {
     @EnvironmentObject private var storeModel: StoreModel
     @State private var showNewSessionSheet = false
+    @State private var showEditorForNewSession = false
     
     var body: some View {
         List {
@@ -35,8 +36,18 @@ struct SessionsScreen: View {
                     }
                 }
             }
-            .sheet(isPresented: $showNewSessionSheet, content: {
-                NewSessionView(showNewSessionSheet: $showNewSessionSheet)
+            .sheet(isPresented: $showNewSessionSheet, onDismiss: {
+                showNewSessionSheet = false
+                // TODO: check for a favorite game selection and then proceed
+                if true {
+                    showEditorForNewSession = true
+                }
+            }, content: {
+                NewSessionView()
+            })
+            .navigationDestination(isPresented: $showEditorForNewSession,
+                                   destination: {
+                SessionDetailsScreen(session: $storeModel.sessions[0])
             })
     }
 }

@@ -9,22 +9,32 @@ import SwiftUI
 
 struct NewSessionView: View {
     @EnvironmentObject private var storeModel: StoreModel
-    @Binding var showNewSessionSheet: Bool
-    
+    @State var selectedGame = 0
+
+    @Environment(\.dismiss) private var dismiss
+
     var body: some View {
-        List {
-            ForEach(storeModel.favoriteGames) { fav in
-                Text("\(fav.name)")
+        NavigationView {
+            List {
+                Section("Favorites") {
+                    ForEach(storeModel.favoriteGames) { fav in
+                        Text("\(fav.name)")
+                            .onTapGesture {
+                                dismiss()
+                                print("\(fav.name)")
+                            }
+                    }
+                }
+            }
+            Button("Cancel") {
+                dismiss()
             }
         }
     }
 }
 
 #Preview {
-    @State var showNewSessionSheet = true
-    
-    return NavigationStack {
-        NewSessionView(showNewSessionSheet: $showNewSessionSheet)
+    return NewSessionView()
             .environmentObject(StoreModel.mockEmpty)
-    }
+            .navigationBarTitleDisplayMode(.inline)
 }

@@ -11,7 +11,8 @@ class StoreModel: ObservableObject {
     @Published var sessions: [Session]
     @Published var favoriteGames: [FavoriteGame] = [
         FavoriteGame(id: 0, name: "1-2 No Limit HoldEm", smallBind: 1, bigBlind: 2, tags: [.gameType("HoldEm"), .limitType("No Limit")]),
-        FavoriteGame(id: 1, name: "4-8 Limit HoldEm", smallBind: 4, bigBlind: 8, tags: [.gameType("HoldEm"), .limitType("Limit")]),
+        FavoriteGame(id: 1, name: "1-3 No Limit HoldEm", smallBind: 1, bigBlind: 3, tags: [.gameType("HoldEm"), .limitType("No Limit")]),
+        FavoriteGame(id: 2, name: "4-8 Limit HoldEm", smallBind: 4, bigBlind: 8, tags: [.gameType("HoldEm"), .limitType("Limit")]),
     ]
     
     static var mockEmpty: StoreModel {
