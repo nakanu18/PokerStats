@@ -11,10 +11,10 @@ struct SessionDetailsScreen: View {
     @Binding var session: Session
     
     var body: some View {
-        HStack {
-            Text(session.startDate.shorten())
-            Spacer()
-            Text(session.profit.dollars())
+        List {
+            DetailCell(title: "Game Type", value: session.gameType.rawValue)
+            DetailCell(title: "Limit", value: session.limitType.rawValue)
+            DetailCell(title: "Date", value: session.startDate.shorten())
         }
     }
 }
@@ -23,5 +23,18 @@ struct SessionDetailsScreen: View {
     NavigationStack {
         SessionDetailsScreen(session: Binding.constant(StoreModel.mockEmpty.sessions.first!))
             .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+struct DetailCell: View {
+    let title: String
+    let value: String
+    
+    var body: some View {
+        HStack {
+            Text(title)
+            Spacer()
+            Text(value)
+        }
     }
 }

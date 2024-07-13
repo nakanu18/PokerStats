@@ -65,6 +65,7 @@ struct SessionCell: View {
     
     var body: some View {
         HStack {
+            Text("\(session.id):")
             Text(session.startDate.shorten())
             Spacer()
             Text(session.profit.dollars())

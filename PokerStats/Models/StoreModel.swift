@@ -10,26 +10,30 @@ import Foundation
 class StoreModel: ObservableObject {
     @Published var sessions: [Session]
     @Published var favoriteGames: [FavoriteGame] = [
-        FavoriteGame(id: 0, name: "1-2 No Limit HoldEm", smallBind: 1, bigBlind: 2, tags: [.gameType("HoldEm"), .limitType("No Limit")]),
-        FavoriteGame(id: 1, name: "1-3 No Limit HoldEm", smallBind: 1, bigBlind: 3, tags: [.gameType("HoldEm"), .limitType("No Limit")]),
-        FavoriteGame(id: 2, name: "4-8 Limit HoldEm", smallBind: 4, bigBlind: 8, tags: [.gameType("HoldEm"), .limitType("Limit")]),
+        FavoriteGame(id: 0, name: "1-2 No Limit HoldEm", gameType: .holdEm, limitType: .noLimit, smallBind: 1, bigBlind: 2, tags: []),
+        FavoriteGame(id: 1, name: "1-3 No Limit HoldEm", gameType: .holdEm, limitType: .noLimit, smallBind: 1, bigBlind: 3, tags: []),
+        FavoriteGame(id: 2, name: "4-8 Limit HoldEm", gameType: .holdEm, limitType: .noLimit, smallBind: 4, bigBlind: 8, tags: []),
     ]
     
     static var mockEmpty: StoreModel {
         let mock = StoreModel()
-        let session0 = Session(id: 0,
+        let session0 = Session(id: 1,
                                isDone: true,
                                startDate: Date.now,
                                totalMinutes: 105,
                                stack: [.buyin: 200, .rebuy: 300],
-                               tags: [.gameType("HoldEm"), .limitType("No Limit"), .location("Rockford")],
+                               gameType: .holdEm,
+                               limitType: .noLimit,
+                               tags: [.location("Rockford")],
                                smallBlind: 1, bigBlind: 3)
-        let session1 = Session(id: 1,
+        let session1 = Session(id: 0,
                                isDone: true,
                                startDate: Date.now,
                                totalMinutes: 105,
                                stack: [.buyin: 300],
-                               tags: [.gameType("HoldEm"), .limitType("No Limit"), .location("Horseshoe")],
+                               gameType: .holdEm,
+                               limitType: .noLimit,
+                               tags: [.location("Horseshoe")],
                                smallBlind: 1, bigBlind: 3)
         mock.sessions = [session0, session1]
         return mock
@@ -44,8 +48,16 @@ enum StackEvent: Codable {
     case buyin, rebuy, adjust
 }
 
-enum Tag: Codable {
-    case gameType(String), limitType(String), location(String), custom(String)
+enum GameType: String, Codable {
+    case holdEm = "HoldEm", omaha = "Omaha"
+}
+
+enum LimitType: String, Codable {
+    case noLimit = "No Limit", potLimit = "Pot Limit", limit = "Limit"
+}
+
+enum Tag: Codable {    
+    case location(String), custom(String)
 }
 
 struct Session: Identifiable, Codable {
@@ -55,10 +67,12 @@ struct Session: Identifiable, Codable {
     let totalMinutes: Int
     let stack: [StackEvent: Int]
     
+    let gameType: GameType
+    let limitType: LimitType
     let tags: [Tag]
     let smallBlind: Int
     let bigBlind: Int
-    
+
     var initialBuyin: Int {
         return stack.first?.value ?? 0
     }
@@ -66,7 +80,7 @@ struct Session: Identifiable, Codable {
     var totalStack: Int {
         return stack.reduce(0) { (result, keyValue) in
             return result + keyValue.value
-      }
+        }
     }
     
     var totalStackInBigBlinds: Int {
@@ -82,6 +96,8 @@ struct FavoriteGame: Identifiable, Codable {
     let id: Int
     let name: String
     
+    let gameType: GameType
+    let limitType: LimitType
     let smallBind: Int
     let bigBlind: Int
     let tags: [Tag]

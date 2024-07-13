@@ -15,19 +15,21 @@ struct NewSessionView: View {
 
     var body: some View {
         NavigationView {
-            List {
-                Section("Favorites") {
-                    ForEach(storeModel.favoriteGames) { fav in
-                        Text("\(fav.name)")
-                            .onTapGesture {
-                                dismiss()
-                                print("\(fav.name)")
-                            }
+            VStack{
+                List {
+                    Section("Favorites") {
+                        ForEach(storeModel.favoriteGames) { fav in
+                            Text("\(fav.name)")
+                                .onTapGesture {
+                                    dismiss()
+                                    print("\(fav.name)")
+                                }
+                        }
                     }
                 }
-            }
-            Button("Cancel") {
-                dismiss()
+                Button("Cancel") {
+                    dismiss()
+                }
             }
         }
     }
