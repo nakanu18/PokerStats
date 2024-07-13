@@ -9,10 +9,9 @@ import Foundation
 
 class StoreModel: ObservableObject {
     @Published var sessions: [Session]
-    @Published var favoriteGames: [FavoriteGame] = [
-        FavoriteGame(id: 0, name: "1-2 No Limit HoldEm", gameType: .holdEm, limitType: .noLimit, smallBind: 1, bigBlind: 2, tags: []),
-        FavoriteGame(id: 1, name: "1-3 No Limit HoldEm", gameType: .holdEm, limitType: .noLimit, smallBind: 1, bigBlind: 3, tags: []),
-        FavoriteGame(id: 2, name: "4-8 Limit HoldEm", gameType: .holdEm, limitType: .noLimit, smallBind: 4, bigBlind: 8, tags: []),
+    @Published var favoriteTemplates: [SessionTemplate] = [
+        SessionTemplate(id: 0, gameType: .holdEm, limitType: .noLimit, smallBlind: 1, bigBlind: 3, tags: []),
+        SessionTemplate(id: 1, gameType: .holdEm, limitType: .limit, smallBlind: 4, bigBlind: 8, tags: []),
     ]
     
     static var mockEmpty: StoreModel {
@@ -22,19 +21,25 @@ class StoreModel: ObservableObject {
                                startDate: Date.now,
                                totalMinutes: 105,
                                stack: [.buyin: 200, .rebuy: 300],
-                               gameType: .holdEm,
-                               limitType: .noLimit,
-                               tags: [.location("Rockford")],
-                               smallBlind: 1, bigBlind: 3)
+                               template: SessionTemplate(id: 1,
+                                                         gameType: .holdEm,
+                                                         limitType: .noLimit,
+                                                         smallBlind: 1, 
+                                                         bigBlind: 3,
+                                                         tags: [.location("Rockford")])
+        )
         let session1 = Session(id: 0,
                                isDone: true,
                                startDate: Date.now,
                                totalMinutes: 105,
-                               stack: [.buyin: 300],
-                               gameType: .holdEm,
-                               limitType: .noLimit,
-                               tags: [.location("Horseshoe")],
-                               smallBlind: 1, bigBlind: 3)
+                               stack: [.buyin: 200],
+                               template: SessionTemplate(id: 1,
+                                                         gameType: .holdEm,
+                                                         limitType: .noLimit,
+                                                         smallBlind: 1,
+                                                         bigBlind: 2,
+                                                         tags: [.location("Horseshoe")])
+        )
         mock.sessions = [session0, session1]
         return mock
     }
@@ -67,11 +72,7 @@ struct Session: Identifiable, Codable {
     let totalMinutes: Int
     let stack: [StackEvent: Int]
     
-    let gameType: GameType
-    let limitType: LimitType
-    let tags: [Tag]
-    let smallBlind: Int
-    let bigBlind: Int
+    let template: SessionTemplate
 
     var initialBuyin: Int {
         return stack.first?.value ?? 0
@@ -84,7 +85,7 @@ struct Session: Identifiable, Codable {
     }
     
     var totalStackInBigBlinds: Int {
-        return totalStack / bigBlind
+        return totalStack / template.bigBlind
     }
     
     var profit: Int {
@@ -92,13 +93,15 @@ struct Session: Identifiable, Codable {
     }
 }
 
-struct FavoriteGame: Identifiable, Codable {
+struct SessionTemplate: Identifiable, Codable {
     let id: Int
-    let name: String
-    
     let gameType: GameType
     let limitType: LimitType
-    let smallBind: Int
+    let smallBlind: Int
     let bigBlind: Int
     let tags: [Tag]
+    
+    var name: String {
+        "\(smallBlind)-\(bigBlind) \(limitType.rawValue) \(gameType.rawValue)"
+    }
 }

@@ -12,8 +12,8 @@ struct SessionDetailsScreen: View {
     
     var body: some View {
         List {
-            DetailCell(title: "Game Type", value: session.gameType.rawValue)
-            DetailCell(title: "Limit", value: session.limitType.rawValue)
+            DetailCell(title: "Game Type", value: session.template.gameType.rawValue)
+            DetailCell(title: "Limit", value: session.template.limitType.rawValue)
             DetailCell(title: "Date", value: session.startDate.shorten())
         }
     }

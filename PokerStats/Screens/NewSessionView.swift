@@ -18,7 +18,7 @@ struct NewSessionView: View {
             VStack{
                 List {
                     Section("Favorites") {
-                        ForEach(storeModel.favoriteGames) { fav in
+                        ForEach(storeModel.favoriteTemplates) { fav in
                             Text("\(fav.name)")
                                 .onTapGesture {
                                     dismiss()
