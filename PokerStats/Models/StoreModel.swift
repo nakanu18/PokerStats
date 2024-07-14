@@ -47,6 +47,22 @@ class StoreModel: ObservableObject {
     init() {
         sessions = []
     }
+    
+    func createNewSession(template: SessionTemplate) -> Session {
+        let ID = latestSessionID + 1
+        let newSession = Session(id: ID, isDone: false, startDate: Date.now, totalMinutes: 0, stack: [:], template: template)
+        
+        sessions.insert(newSession, at: 0)
+        print("*** Creating new session: \(newSession.id) - \(newSession.template.desc)")
+        return newSession
+    }
+    
+    var latestSessionID: Int {
+        guard let first = sessions.first else {
+            return 0
+        }
+        return first.id
+    }
 }
 
 enum StackEvent: Codable {
@@ -91,6 +107,10 @@ struct Session: Identifiable, Codable {
     var profit: Int {
         return totalStack - initialBuyin
     }
+    
+    var profitInBigBlinds: Float {
+        return Float(profit) / Float(template.bigBlind)
+    }
 }
 
 struct SessionTemplate: Identifiable, Codable {
@@ -101,7 +121,15 @@ struct SessionTemplate: Identifiable, Codable {
     let bigBlind: Int
     let tags: [Tag]
     
-    var name: String {
-        "\(smallBlind)-\(bigBlind) \(limitType.rawValue) \(gameType.rawValue)"
+    var desc: String {
+        "\(stakesDesc) \(gameTypeDesc)"
+    }
+    
+    var gameTypeDesc: String {
+        "\(limitType.rawValue) \(gameType.rawValue)"
+    }
+    
+    var stakesDesc: String {
+        "$\(smallBlind)/\(bigBlind)"
     }
 }

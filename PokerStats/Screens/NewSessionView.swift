@@ -9,6 +9,7 @@ import SwiftUI
 
 struct NewSessionView: View {
     @EnvironmentObject private var storeModel: StoreModel
+    @Binding var isNewSessionCreated: Bool
     @State var selectedGame = 0
 
     @Environment(\.dismiss) private var dismiss
@@ -19,15 +20,17 @@ struct NewSessionView: View {
                 List {
                     Section("Favorites") {
                         ForEach(storeModel.favoriteTemplates) { fav in
-                            Text("\(fav.name)")
+                            Text("\(fav.desc)")
                                 .onTapGesture {
+                                    let _ = storeModel.createNewSession(template: fav)
+                                    isNewSessionCreated = true
                                     dismiss()
-                                    print("\(fav.name)")
                                 }
                         }
                     }
                 }
                 Button("Cancel") {
+                    isNewSessionCreated = false
                     dismiss()
                 }
             }
@@ -36,7 +39,9 @@ struct NewSessionView: View {
 }
 
 #Preview {
-    return NewSessionView()
+    @State var isNewSessionCreated = false
+    
+    return NewSessionView(isNewSessionCreated: $isNewSessionCreated)
             .environmentObject(StoreModel.mockEmpty)
             .navigationBarTitleDisplayMode(.inline)
 }

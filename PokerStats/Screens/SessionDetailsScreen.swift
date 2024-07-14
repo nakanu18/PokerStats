@@ -12,9 +12,17 @@ struct SessionDetailsScreen: View {
     
     var body: some View {
         List {
-            DetailCell(title: "Game Type", value: session.template.gameType.rawValue)
-            DetailCell(title: "Limit", value: session.template.limitType.rawValue)
-            DetailCell(title: "Date", value: session.startDate.shorten())
+            Section("Date") {
+                DetailCell(title: "Date", value: session.startDate.shorten())
+            }
+            
+            Section("Overview") {
+                DetailCell(title: "ID", value: "\(session.id)")
+                DetailCell(title: "Game", value: session.template.gameTypeDesc)
+                DetailCell(title: "Stakes", value: session.template.stakesDesc)
+                DetailCell(title: "Profit", value: session.profit.toDollars())
+                DetailCell(title: "Profit in BB", value: "\(session.profitInBigBlinds.toOneDecimal()) BB")
+            }
         }
     }
 }
@@ -33,6 +41,7 @@ struct DetailCell: View {
     var body: some View {
         HStack {
             Text(title)
+                .font(.headline)
             Spacer()
             Text(value)
         }

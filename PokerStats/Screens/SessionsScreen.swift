@@ -10,7 +10,7 @@ import SwiftUI
 struct SessionsScreen: View {
     @EnvironmentObject private var storeModel: StoreModel
     @State private var showNewSessionSheet = false
-    @State private var showEditorForNewSession = false
+    @State private var isNewSessionCreated = false
     
     var body: some View {
         List {
@@ -38,14 +38,10 @@ struct SessionsScreen: View {
             }
             .sheet(isPresented: $showNewSessionSheet, onDismiss: {
                 showNewSessionSheet = false
-                // TODO: check for a favorite game selection and then proceed
-                if true {
-                    showEditorForNewSession = true
-                }
             }, content: {
-                NewSessionView()
+                NewSessionView(isNewSessionCreated: $isNewSessionCreated)
             })
-            .navigationDestination(isPresented: $showEditorForNewSession,
+            .navigationDestination(isPresented: $isNewSessionCreated,
                                    destination: {
                 SessionDetailsScreen(session: $storeModel.sessions[0])
             })
@@ -64,11 +60,20 @@ struct SessionCell: View {
     let session: Session
     
     var body: some View {
-        HStack {
-            Text("\(session.id):")
-            Text(session.startDate.shorten())
-            Spacer()
-            Text(session.profit.dollars())
+        VStack {
+            HStack {
+                Text("\(session.id):")
+                    .font(.caption)
+                Text(session.startDate.shorten())
+                    .font(.caption)
+                Spacer()
+            }
+            HStack {
+                Text("\(session.template.desc)")
+                    .font(.headline)
+                Spacer()
+                Text(session.profit.toDollars())
+            }
         }
     }
 }

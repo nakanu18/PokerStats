@@ -31,13 +31,28 @@ extension NumberFormatter {
         formatter.maximumFractionDigits = 0
         return formatter
     }
+    
+    static var Formatter: NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = Locale.current // Optional: Set to specific locale if needed
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 0
+        return formatter
+    }
 }
 
 extension Int {
-    func dollars() -> String {
+    func toDollars() -> String {
         guard let val = NumberFormatter.dollarFormatter.string(from: self as NSNumber) else {
             return "$0"
         }
         return val
+    }
+}
+
+extension Float {
+    func toOneDecimal() -> String {
+        String(format: "%.1f", self)
     }
 }
