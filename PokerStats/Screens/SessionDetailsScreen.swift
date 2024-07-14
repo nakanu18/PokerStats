@@ -9,6 +9,16 @@ import SwiftUI
 
 struct SessionDetailsScreen: View {
     @Binding var session: Session
+    @State private var timer: Timer? = nil
+
+    private func startTimer() {
+        session.totalMinutes += 0.01
+    }
+    
+    private func stopTimer() {
+        timer?.invalidate()
+        timer = nil
+    }
     
     var body: some View {
         List {
@@ -23,13 +33,35 @@ struct SessionDetailsScreen: View {
                 DetailCell(title: "Profit", value: session.profit.toDollars())
                 DetailCell(title: "Profit in BB", value: "\(session.profitInBigBlinds.toOneDecimal()) BB")
             }
+            
+            Section("Time Played") {
+                HStack {
+                    Text(session.totalMinutes.toMinutes())
+                      .font(.largeTitle)
+                      .foregroundStyle(timer != nil ? .green : .black)
+                    Spacer()
+                    if let _ = timer {
+                        Button("Stop") {
+                            stopTimer()
+                        }
+                    } else {
+                        Button("Start") {
+                            timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+                                startTimer()
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
 
 #Preview {
-    NavigationStack {
-        SessionDetailsScreen(session: Binding.constant(StoreModel.mockEmpty.sessions.first!))
+    @State var session = StoreModel.mockEmpty.sessions.first!
+
+    return NavigationStack {
+        SessionDetailsScreen(session: $session)
             .navigationBarTitleDisplayMode(.inline)
     }
 }

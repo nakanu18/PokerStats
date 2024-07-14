@@ -85,7 +85,7 @@ struct Session: Identifiable, Codable {
     let id: Int
     let isDone: Bool
     let startDate: Date
-    let totalMinutes: Int
+    var totalMinutes: Float
     let stack: [StackEvent: Int]
     
     let template: SessionTemplate

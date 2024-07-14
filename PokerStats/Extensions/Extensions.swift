@@ -55,4 +55,8 @@ extension Float {
     func toOneDecimal() -> String {
         String(format: "%.1f", self)
     }
+    
+    func toMinutes() -> String {
+        String(format: "%02d:%02.2f", Int(self / 60), self.truncatingRemainder(dividingBy: 60))
+    }
 }
