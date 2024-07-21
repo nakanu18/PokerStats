@@ -9,6 +9,7 @@ import Foundation
 
 class StoreModel: ObservableObject {
     @Published var sessions: [Session]
+    @Published var newSession: Session?
     @Published var favoriteTemplates: [SessionTemplate] = [
         SessionTemplate(id: 0, gameType: .holdEm, limitType: .noLimit, smallBlind: 1, bigBlind: 3, tags: []),
         SessionTemplate(id: 1, gameType: .holdEm, limitType: .limit, smallBlind: 4, bigBlind: 8, tags: []),
@@ -50,11 +51,10 @@ class StoreModel: ObservableObject {
     
     func createNewSession(template: SessionTemplate) -> Session {
         let ID = latestSessionID + 1
-        let newSession = Session(id: ID, isDone: false, startDate: Date.now, totalMinutes: 0, stack: [:], template: template)
+        newSession = Session(id: ID, isDone: false, startDate: Date.now, totalMinutes: 0, stack: [:], template: template)
         
-        sessions.insert(newSession, at: 0)
-        print("*** Creating new session: \(newSession.id) - \(newSession.template.desc)")
-        return newSession
+        print("*** Creating new session: \(newSession!.id) - \(newSession!.template.desc)")
+        return newSession!
     }
     
     var latestSessionID: Int {
@@ -130,6 +130,6 @@ struct SessionTemplate: Identifiable, Codable {
     }
     
     var stakesDesc: String {
-        "$\(smallBlind)/\(bigBlind)"
+        "$\(smallBlind) / \(bigBlind)"
     }
 }

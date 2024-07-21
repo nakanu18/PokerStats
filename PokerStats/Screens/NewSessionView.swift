@@ -15,24 +15,22 @@ struct NewSessionView: View {
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        NavigationView {
-            VStack{
-                List {
-                    Section("Favorites") {
-                        ForEach(storeModel.favoriteTemplates) { fav in
-                            Text("\(fav.desc)")
-                                .onTapGesture {
-                                    let _ = storeModel.createNewSession(template: fav)
-                                    isNewSessionCreated = true
-                                    dismiss()
-                                }
-                        }
+        VStack{
+            List {
+                Section("Favorites") {
+                    ForEach(storeModel.favoriteTemplates) { fav in
+                        Text("\(fav.desc)")
+                            .onTapGesture {
+                                let _ = storeModel.createNewSession(template: fav)
+                                isNewSessionCreated = true
+                                dismiss()
+                            }
                     }
                 }
-                Button("Cancel") {
-                    isNewSessionCreated = false
-                    dismiss()
-                }
+            }
+            Button("Cancel") {
+                isNewSessionCreated = false
+                dismiss()
             }
         }
     }
@@ -44,4 +42,5 @@ struct NewSessionView: View {
     return NewSessionView(isNewSessionCreated: $isNewSessionCreated)
             .environmentObject(StoreModel.mockEmpty)
             .navigationBarTitleDisplayMode(.inline)
+            .preferredColorScheme(.dark)
 }

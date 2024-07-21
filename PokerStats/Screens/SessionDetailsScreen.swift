@@ -28,8 +28,7 @@ struct SessionDetailsScreen: View {
             
             Section("Overview") {
                 DetailCell(title: "ID", value: "\(session.id)")
-                DetailCell(title: "Game", value: session.template.gameTypeDesc)
-                DetailCell(title: "Stakes", value: session.template.stakesDesc)
+                DetailCell(title: "Game", value: session.template.desc)
                 DetailCell(title: "Profit", value: session.profit.toDollars())
                 DetailCell(title: "Profit in BB", value: "\(session.profitInBigBlinds.toOneDecimal()) BB")
             }
@@ -38,7 +37,7 @@ struct SessionDetailsScreen: View {
                 HStack {
                     Text(session.totalMinutes.toMinutes())
                       .font(.largeTitle)
-                      .foregroundStyle(timer != nil ? .green : .black)
+                      .foregroundStyle(timer != nil ? .green : .white)
                     Spacer()
                     if let _ = timer {
                         Button("Stop") {
@@ -58,11 +57,12 @@ struct SessionDetailsScreen: View {
 }
 
 #Preview {
-    @State var session = StoreModel.mockEmpty.sessions.first!
-
+    @State var storeModel = StoreModel.mockEmpty
+    
     return NavigationStack {
-        SessionDetailsScreen(session: $session)
+        SessionDetailsScreen(session: $storeModel.sessions.first!)
             .navigationBarTitleDisplayMode(.inline)
+            .preferredColorScheme(.dark)
     }
 }
 
