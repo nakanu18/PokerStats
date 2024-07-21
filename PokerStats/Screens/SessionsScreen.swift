@@ -14,12 +14,12 @@ struct SessionsScreen: View {
 
     private func newSessionView() -> some View {
         Group {
-            if let newSession = storeModel.newSession {
+            if let liveSession = storeModel.liveSession {
                 Section(header: Text("Live")) {
-                    NavigationLink(destination: SessionDetailsScreen(session: Binding(get: { storeModel.newSession! },
-                                                                                      set: { storeModel.newSession = $0 }))) {
-                        SessionCell(session: newSession)
-                    }.listRowBackground(newSession.isDone ? nil : Color.green)
+                    NavigationLink(destination: SessionDetailsScreen(session: Binding(get: { storeModel.liveSession! },
+                                                                                      set: { storeModel.liveSession = $0 }))) {
+                        SessionCell(session: liveSession)
+                    }.listRowBackground(liveSession.isDone ? nil : Color.green)
                 }
             }
         }
@@ -54,7 +54,7 @@ struct SessionsScreen: View {
             .sheet(isPresented: $showNewSessionSheet, onDismiss: {
                 showNewSessionSheet = false
             }, content: {
-                NewSessionView(isNewSessionCreated: $isNewSessionCreated)
+                LiveSessionView(isNewSessionCreated: $isNewSessionCreated)
             })
             .navigationDestination(isPresented: $isNewSessionCreated,
                                    destination: {

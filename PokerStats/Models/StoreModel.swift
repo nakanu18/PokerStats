@@ -9,7 +9,7 @@ import Foundation
 
 class StoreModel: ObservableObject {
     @Published var sessions: [Session]
-    @Published var newSession: Session?
+    @Published var liveSession: Session?
     @Published var favoriteTemplates: [SessionTemplate] = [
         SessionTemplate(id: 0, gameType: .holdEm, limitType: .noLimit, smallBlind: 1, bigBlind: 3, tags: []),
         SessionTemplate(id: 1, gameType: .holdEm, limitType: .limit, smallBlind: 4, bigBlind: 8, tags: []),
@@ -41,6 +41,7 @@ class StoreModel: ObservableObject {
                                                          bigBlind: 2,
                                                          tags: [.location("Horseshoe")])
         )
+        mock.liveSession = mock.createNewSession(template: mock.favoriteTemplates[0])
         mock.sessions = [session0, session1]
         return mock
     }
@@ -51,10 +52,10 @@ class StoreModel: ObservableObject {
     
     func createNewSession(template: SessionTemplate) -> Session {
         let ID = latestSessionID + 1
-        newSession = Session(id: ID, isDone: false, startDate: Date.now, totalMinutes: 0, stack: [:], template: template)
+        liveSession = Session(id: ID, isDone: false, startDate: Date.now, totalMinutes: 0, stack: [:], template: template)
         
-        print("*** Creating new session: \(newSession!.id) - \(newSession!.template.desc)")
-        return newSession!
+        print("*** Creating new session: \(liveSession!.id) - \(liveSession!.template.desc)")
+        return liveSession!
     }
     
     var latestSessionID: Int {
