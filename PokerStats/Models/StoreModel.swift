@@ -15,6 +15,29 @@ class StoreModel: ObservableObject {
         SessionTemplate(id: 1, gameType: .holdEm, limitType: .limit, smallBlind: 4, bigBlind: 8, tags: []),
     ]
     
+    @Published private var liveSessionTimer: Timer? = nil
+    
+    var isLiveSessionActive: Bool {
+        liveSessionTimer != nil
+    }
+    
+    func startTimerForLiveSession() {
+        stopTimerForLiveSession()
+        
+        guard liveSession != nil else {
+            return
+        }
+        liveSessionTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            self.liveSession!.totalMinutes += 50/60.0;
+            print("\(self.liveSession!.totalMinutes)")
+        }
+    }
+    
+    func stopTimerForLiveSession() {
+        liveSessionTimer?.invalidate()
+        liveSessionTimer = nil
+    }
+
     static var mockEmpty: StoreModel {
         let mock = StoreModel()
         let session0 = Session(id: 1,
@@ -41,8 +64,8 @@ class StoreModel: ObservableObject {
                                                          bigBlind: 2,
                                                          tags: [.location("Horseshoe")])
         )
-        mock.liveSession = mock.createNewSession(template: mock.favoriteTemplates[0])
         mock.sessions = [session0, session1]
+        mock.liveSession = mock.createNewSession(template: mock.favoriteTemplates[0])
         return mock
     }
     

@@ -17,7 +17,9 @@ struct SessionsScreen: View {
             if let liveSession = storeModel.liveSession {
                 Section(header: Text("Live")) {
                     NavigationLink(destination: SessionDetailsScreen(session: Binding(get: { storeModel.liveSession! },
-                                                                                      set: { storeModel.liveSession = $0 }))) {
+                                                                                      set: { storeModel.liveSession = $0 }))
+                        .environmentObject(storeModel)
+                    ) {
                         SessionCell(session: liveSession)
                     }.listRowBackground(liveSession.isDone ? nil : Color.green)
                 }
@@ -25,30 +27,36 @@ struct SessionsScreen: View {
         }
     }
     
+    private func historyView() -> some View {
+        Section("History") {
+            ForEach(storeModel.sessions) { session in
+                let sessionID = storeModel.sessions.firstIndex(where: { $0.id == session.id })!
+                NavigationLink(destination: SessionDetailsScreen(session: $storeModel.sessions[sessionID])) {
+                    SessionCell(session: session)
+                }.listRowBackground(session.isDone ? nil : Color.green)
+            }.onDelete { offsets in
+                storeModel.sessions.remove(atOffsets: offsets)
+            }
+        }
+    }
+    
+    //
+    // Body
+    //
+    
     var body: some View {
         List {
             Section("Info") {
                 Text("Total Sessions: \(storeModel.sessions.count)")
             }
-            
             newSessionView()
-
-            Section("History") {
-                ForEach(storeModel.sessions) { session in
-                    let selectedSession = $storeModel.sessions[$storeModel.sessions.firstIndex(where: { $0.id == session.id })!]
-                    NavigationLink(destination: SessionDetailsScreen(session: selectedSession)) {
-                        SessionCell(session: session)
-                    }.listRowBackground(session.isDone ? nil : Color.green)
-                }.onDelete { offsets in
-                    storeModel.sessions.remove(atOffsets: offsets)
-                }
-            }
+            historyView()
         }.navigationTitle("Sessions")
             .toolbar {
                 ToolbarItem(placement: .automatic) {
                     Button("New Session") {
                         showNewSessionSheet = true
-                    }
+                    }.disabled(storeModel.liveSession != nil)
                 }
             }
             .sheet(isPresented: $showNewSessionSheet, onDismiss: {

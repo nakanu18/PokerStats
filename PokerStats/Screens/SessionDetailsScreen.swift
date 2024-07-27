@@ -8,17 +8,8 @@
 import SwiftUI
 
 struct SessionDetailsScreen: View {
+    @EnvironmentObject private var storeModel: StoreModel
     @Binding var session: Session
-    @State private var timer: Timer? = nil
-
-    private func startTimer() {
-        session.totalMinutes += 0.01
-    }
-    
-    private func stopTimer() {
-        timer?.invalidate()
-        timer = nil
-    }
     
     var body: some View {
         List {
@@ -37,17 +28,15 @@ struct SessionDetailsScreen: View {
                 HStack {
                     Text(session.totalMinutes.toMinutes())
                       .font(.largeTitle)
-                      .foregroundStyle(timer != nil ? .green : .white)
+                      .foregroundStyle(storeModel.isLiveSessionActive ? .green : .white)
                     Spacer()
-                    if let _ = timer {
+                    if storeModel.isLiveSessionActive {
                         Button("Stop") {
-                            stopTimer()
+                            storeModel.stopTimerForLiveSession()
                         }
                     } else {
                         Button("Start") {
-                            timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-                                startTimer()
-                            }
+                            storeModel.startTimerForLiveSession()
                         }
                     }
                 }
@@ -60,7 +49,9 @@ struct SessionDetailsScreen: View {
     @State var storeModel = StoreModel.mockEmpty
     
     return NavigationStack {
-        SessionDetailsScreen(session: $storeModel.sessions.first!)
+        SessionDetailsScreen(session: Binding(get: { storeModel.liveSession! },
+                                              set: { storeModel.liveSession = $0 }))
+            .environmentObject(storeModel)
             .navigationBarTitleDisplayMode(.inline)
             .preferredColorScheme(.dark)
     }

@@ -57,6 +57,13 @@ extension Float {
     }
     
     func toMinutes() -> String {
-        String(format: "%02d:%02.2f", Int(self / 60), self.truncatingRemainder(dividingBy: 60))
+        let totalSeconds = Int(floor(self * 60))
+
+        let hours = totalSeconds / 3600
+        let minutes = (totalSeconds % 3600) / 60
+        let seconds = totalSeconds % 60
+
+        let formattedTime = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+        return formattedTime
     }
 }
