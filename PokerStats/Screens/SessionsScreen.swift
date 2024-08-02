@@ -31,7 +31,9 @@ struct SessionsScreen: View {
         Section("History") {
             ForEach(storeModel.sessions) { session in
                 let sessionID = storeModel.sessions.firstIndex(where: { $0.id == session.id })!
-                NavigationLink(destination: SessionDetailsScreen(session: $storeModel.sessions[sessionID])) {
+                NavigationLink(destination: SessionDetailsScreen(session: $storeModel.sessions[sessionID])
+                    .environmentObject(storeModel)
+                ) {
                     SessionCell(session: session)
                 }.listRowBackground(session.isDone ? nil : Color.green)
             }.onDelete { offsets in

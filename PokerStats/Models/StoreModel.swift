@@ -28,8 +28,7 @@ class StoreModel: ObservableObject {
             return
         }
         liveSessionTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-            self.liveSession!.totalMinutes += 50/60.0;
-            print("\(self.liveSession!.totalMinutes)")
+            self.liveSession!.totalMinutes += 1/60.0;
         }
     }
     

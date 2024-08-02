@@ -30,13 +30,15 @@ struct SessionDetailsScreen: View {
                       .font(.largeTitle)
                       .foregroundStyle(storeModel.isLiveSessionActive ? .green : .white)
                     Spacer()
-                    if storeModel.isLiveSessionActive {
-                        Button("Stop") {
-                            storeModel.stopTimerForLiveSession()
-                        }
-                    } else {
-                        Button("Start") {
-                            storeModel.startTimerForLiveSession()
+                    if !session.isDone {
+                        if storeModel.isLiveSessionActive {
+                            Button("Stop") {
+                                storeModel.stopTimerForLiveSession()
+                            }
+                        } else {
+                            Button("Start") {
+                                storeModel.startTimerForLiveSession()
+                            }
                         }
                     }
                 }
