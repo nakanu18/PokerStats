@@ -18,7 +18,6 @@ struct SessionsScreen: View {
                 Section(header: Text("Live")) {
                     NavigationLink(destination: SessionDetailsScreen(session: Binding(get: { storeModel.liveSession! },
                                                                                       set: { storeModel.liveSession = $0 }))
-                        .environmentObject(storeModel)
                     ) {
                         SessionCell(session: storeModel.liveSession!)
                     }.listRowBackground(storeModel.liveSession!.isDone ? nil : Color.green)
@@ -32,7 +31,6 @@ struct SessionsScreen: View {
             ForEach(storeModel.sessions) { session in
                 let sessionID = storeModel.sessions.firstIndex(where: { $0.id == session.id })!
                 NavigationLink(destination: SessionDetailsScreen(session: $storeModel.sessions[sessionID])
-                    .environmentObject(storeModel) // is this necessary?
                 ) {
                     SessionCell(session: session)
                 }.listRowBackground(session.isDone ? nil : Color.green)
@@ -72,8 +70,6 @@ struct SessionsScreen: View {
                     SessionDetailsScreen(session: Binding(get: { storeModel.liveSession! },
                                                           set: { storeModel.liveSession = $0 }))
                 }
-//                SessionDetailsScreen(session: $storeModel.sessions[0])
-//                    .environmentObject(storeModel)
             })
     }
 }

@@ -30,8 +30,7 @@ struct SessionDetailsScreen: View {
                     Text("\(session.totalBuyin.toDollars())")
                     Image(systemName: "chevron.down")
                         .foregroundColor(.blue)
-                }
-                    .contentShape(Rectangle())
+                }.contentShape(Rectangle())
                     .onTapGesture {
                         showBuyinsSheet = true
                     }

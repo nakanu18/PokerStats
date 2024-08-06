@@ -15,9 +15,9 @@ struct PokerStatsApp: App {
         WindowGroup {
             NavigationStack {
                 SessionsScreen()
-                    .environmentObject(storeModel)
                     .navigationBarTitleDisplayMode(.inline)
             }.preferredColorScheme(.dark)
+                .environmentObject(storeModel)
         }
     }
 }
