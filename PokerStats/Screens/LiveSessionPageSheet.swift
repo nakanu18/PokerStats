@@ -7,10 +7,9 @@
 
 import SwiftUI
 
-struct LiveSessionView: View {
+struct LiveSessionPageSheet: View {
     @EnvironmentObject private var storeModel: StoreModel
     @Binding var isNewSessionCreated: Bool
-    @State var selectedGame = 0
 
     @Environment(\.dismiss) private var dismiss
 
@@ -39,7 +38,7 @@ struct LiveSessionView: View {
 #Preview {
     @State var isNewSessionCreated = false
     
-    return LiveSessionView(isNewSessionCreated: $isNewSessionCreated)
+    return LiveSessionPageSheet(isNewSessionCreated: $isNewSessionCreated)
             .environmentObject(StoreModel.mockEmpty)
             .navigationBarTitleDisplayMode(.inline)
             .preferredColorScheme(.dark)

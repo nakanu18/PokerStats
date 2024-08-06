@@ -14,14 +14,14 @@ struct SessionsScreen: View {
 
     private func newSessionView() -> some View {
         Group {
-            if let liveSession = storeModel.liveSession {
+            if storeModel.liveSession != nil {
                 Section(header: Text("Live")) {
                     NavigationLink(destination: SessionDetailsScreen(session: Binding(get: { storeModel.liveSession! },
                                                                                       set: { storeModel.liveSession = $0 }))
                         .environmentObject(storeModel)
                     ) {
-                        SessionCell(session: liveSession)
-                    }.listRowBackground(liveSession.isDone ? nil : Color.green)
+                        SessionCell(session: storeModel.liveSession!)
+                    }.listRowBackground(storeModel.liveSession!.isDone ? nil : Color.green)
                 }
             }
         }
@@ -32,7 +32,7 @@ struct SessionsScreen: View {
             ForEach(storeModel.sessions) { session in
                 let sessionID = storeModel.sessions.firstIndex(where: { $0.id == session.id })!
                 NavigationLink(destination: SessionDetailsScreen(session: $storeModel.sessions[sessionID])
-                    .environmentObject(storeModel)
+                    .environmentObject(storeModel) // is this necessary?
                 ) {
                     SessionCell(session: session)
                 }.listRowBackground(session.isDone ? nil : Color.green)
@@ -64,11 +64,16 @@ struct SessionsScreen: View {
             .sheet(isPresented: $showNewSessionSheet, onDismiss: {
                 showNewSessionSheet = false
             }, content: {
-                LiveSessionView(isNewSessionCreated: $isNewSessionCreated)
+                LiveSessionPageSheet(isNewSessionCreated: $isNewSessionCreated)
             })
             .navigationDestination(isPresented: $isNewSessionCreated,
                                    destination: {
-                SessionDetailsScreen(session: $storeModel.sessions[0])
+                if storeModel.liveSession != nil {
+                    SessionDetailsScreen(session: Binding(get: { storeModel.liveSession! },
+                                                          set: { storeModel.liveSession = $0 }))
+                }
+//                SessionDetailsScreen(session: $storeModel.sessions[0])
+//                    .environmentObject(storeModel)
             })
     }
 }

@@ -43,7 +43,7 @@ class StoreModel: ObservableObject {
                                isDone: true,
                                startDate: Date.now,
                                totalMinutes: 105,
-                               stack: [.buyin: 200, .rebuy: 300],
+                               stack: [200, 300],
                                template: SessionTemplate(id: 1,
                                                          gameType: .holdEm,
                                                          limitType: .noLimit,
@@ -55,7 +55,7 @@ class StoreModel: ObservableObject {
                                isDone: true,
                                startDate: Date.now,
                                totalMinutes: 105,
-                               stack: [.buyin: 200],
+                               stack: [200],
                                template: SessionTemplate(id: 1,
                                                          gameType: .holdEm,
                                                          limitType: .noLimit,
@@ -74,7 +74,7 @@ class StoreModel: ObservableObject {
     
     func createNewSession(template: SessionTemplate) -> Session {
         let ID = latestSessionID + 1
-        liveSession = Session(id: ID, isDone: false, startDate: Date.now, totalMinutes: 0, stack: [:], template: template)
+        liveSession = Session(id: ID, isDone: false, startDate: Date.now, totalMinutes: 0, stack: [0], template: template)
         
         print("*** Creating new session: \(liveSession!.id) - \(liveSession!.template.desc)")
         return liveSession!
@@ -86,10 +86,6 @@ class StoreModel: ObservableObject {
         }
         return first.id
     }
-}
-
-enum StackEvent: Codable {
-    case buyin, rebuy, adjust
 }
 
 enum GameType: String, Codable {
@@ -109,17 +105,23 @@ struct Session: Identifiable, Codable {
     let isDone: Bool
     let startDate: Date
     var totalMinutes: Float
-    let stack: [StackEvent: Int]
+    let stack: [Int]
     
     let template: SessionTemplate
 
     var initialBuyin: Int {
-        return stack.first?.value ?? 0
+        return stack.first ?? 0
+    }
+    
+    var totalBuyin: Int {
+        return stack.reduce(0) { result, buyin in
+            return result + buyin
+        }
     }
     
     var totalStack: Int {
-        return stack.reduce(0) { (result, keyValue) in
-            return result + keyValue.value
+        return stack.reduce(0) { (result, value) in
+            return result + value
         }
     }
     
