@@ -8,27 +8,26 @@
 import SwiftUI
 
 struct LiveSessionPageSheet: View {
-    @EnvironmentObject private var storeModel: StoreModel
-    @Binding var isNewSessionCreated: Bool
-
     @Environment(\.dismiss) private var dismiss
+
+    var favoriteTemplates: [SessionTemplate]
+    var onCreateSession: (_ templateForNewSession: SessionTemplate?) -> Void
 
     var body: some View {
         VStack{
             List {
                 Section("Favorites") {
-                    ForEach(storeModel.favoriteTemplates) { fav in
+                    ForEach(favoriteTemplates) { fav in
                         Text("\(fav.desc)")
                             .onTapGesture {
-                                let _ = storeModel.createNewSession(template: fav)
-                                isNewSessionCreated = true
+                                onCreateSession(fav)
                                 dismiss()
                             }
                     }
                 }
             }
             Button("Cancel") {
-                isNewSessionCreated = false
+                onCreateSession(nil)
                 dismiss()
             }
         }
@@ -36,10 +35,12 @@ struct LiveSessionPageSheet: View {
 }
 
 #Preview {
-    @State var isNewSessionCreated = false
+    @State var storeModel = StoreModel.mockEmpty
     
-    return LiveSessionPageSheet(isNewSessionCreated: $isNewSessionCreated)
-            .environmentObject(StoreModel.mockEmpty)
-            .navigationBarTitleDisplayMode(.inline)
+    return Group {
+        LiveSessionPageSheet(favoriteTemplates: storeModel.favoriteTemplates) { templateForNewSession in
+            
+        }.navigationBarTitleDisplayMode(.inline)
             .preferredColorScheme(.dark)
+    }
 }

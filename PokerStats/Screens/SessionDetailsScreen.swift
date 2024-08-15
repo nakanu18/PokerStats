@@ -73,10 +73,9 @@ struct SessionDetailsScreen: View {
 //        SessionDetailsScreen(session: Binding(get: { storeModel.liveSession! },
 //                                              set: { storeModel.liveSession = $0 }))
         SessionDetailsScreen(session: $storeModel.sessions[0])
-            .environmentObject(storeModel)
             .navigationBarTitleDisplayMode(.inline)
             .preferredColorScheme(.dark)
-    }
+    }.environmentObject(storeModel)
 }
 
 struct DetailCell: View {

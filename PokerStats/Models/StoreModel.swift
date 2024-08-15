@@ -64,7 +64,7 @@ class StoreModel: ObservableObject {
                                                          tags: [.location("Horseshoe")])
         )
         mock.sessions = [session0, session1]
-        mock.liveSession = mock.createNewSession(template: mock.favoriteTemplates[0])
+//        mock.liveSession = mock.createNewSession(template: mock.favoriteTemplates[0])
         return mock
     }
     

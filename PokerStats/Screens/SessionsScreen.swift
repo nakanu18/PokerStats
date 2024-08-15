@@ -62,7 +62,15 @@ struct SessionsScreen: View {
             .sheet(isPresented: $showNewSessionSheet, onDismiss: {
                 showNewSessionSheet = false
             }, content: {
-                LiveSessionPageSheet(isNewSessionCreated: $isNewSessionCreated)
+                LiveSessionPageSheet(favoriteTemplates: storeModel.favoriteTemplates) { templateForNewSession in
+                    guard let templateForNewSession = templateForNewSession else {
+                        isNewSessionCreated = false
+                        return
+                    }
+                    
+                    let _ = storeModel.createNewSession(template: templateForNewSession)
+                    isNewSessionCreated = true
+                }
             })
             .navigationDestination(isPresented: $isNewSessionCreated,
                                    destination: {
@@ -77,10 +85,9 @@ struct SessionsScreen: View {
 #Preview {
     NavigationStack {
         SessionsScreen()
-            .environmentObject(StoreModel.mockEmpty)
             .navigationBarTitleDisplayMode(.inline)
             .preferredColorScheme(.dark)
-    }
+    }.environmentObject(StoreModel.mockEmpty)
 }
 
 struct SessionCell: View {
