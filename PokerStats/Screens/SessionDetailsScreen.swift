@@ -9,70 +9,82 @@ import SwiftUI
 
 struct SessionDetailsScreen: View {
     @EnvironmentObject private var storeModel: StoreModel
-    @Binding var session: Session
+    @Environment(\.dismiss) private var dismiss
     @State private var showBuyinsSheet = false
-
+    
     var body: some View {
-        List {
-            Section("Date") {
-                DetailCell(title: "Date", value: session.startDate.shorten())
-            }
-            
-            Section("Overview") {
-                DetailCell(title: "ID", value: "\(session.id)")
-                DetailCell(title: "Game", value: session.template.gameTypeDesc)
-                DetailCell(title: "Stakes", value: session.template.stakesDesc)
-                DetailCell(title: "Profit", value: session.profit.toDollars())
-                DetailCell(title: "Profit in BB", value: "\(session.profitInBigBlinds.toOneDecimal()) BB")
-                HStack {
-                    Text("Buyins [\(session.stack.count)]")
-                    Spacer()
-                    Text("\(session.totalBuyin.toDollars())")
-                    Image(systemName: "chevron.down")
-                        .foregroundColor(.blue)
-                }.contentShape(Rectangle())
-                    .onTapGesture {
-                        showBuyinsSheet = true
-                    }
-            }
-            
-            Section("Time Played") {
-                HStack {
-                    Text(session.totalMinutes.toMinutes())
-                      .font(.largeTitle)
-                      .foregroundStyle(storeModel.isLiveSessionActive ? .green : .white)
-                    Spacer()
-                    if !session.isDone {
-                        if storeModel.isLiveSessionActive {
-                            Button("Stop") {
-                                storeModel.stopTimerForLiveSession()
-                            }
-                        } else {
-                            Button("Start") {
-                                storeModel.startTimerForLiveSession()
+        if let session = storeModel.selectedSession {
+            List {
+                Section("Date") {
+                    DetailCell(title: "Date", value: session.startDate.shorten())
+                }
+                
+                Section("Overview") {
+                    DetailCell(title: "ID", value: "\(session.id)")
+                    DetailCell(title: "Game", value: session.template.gameTypeDesc)
+                    DetailCell(title: "Stakes", value: session.template.stakesDesc)
+                    DetailCell(title: "Profit", value: session.profit.toDollars())
+                    DetailCell(title: "Profit in BB", value: "\(session.profitInBigBlinds.toOneDecimal()) BB")
+                    HStack {
+                        Text("Buyins [\(session.stack.count)]")
+                        Spacer()
+                        Text("\(session.totalBuyin.toDollars())")
+                        Image(systemName: "chevron.down")
+                            .foregroundColor(.blue)
+                    }.contentShape(Rectangle())
+                        .onTapGesture {
+                            showBuyinsSheet = true
+                        }
+                }
+                
+                Section("Time Played") {
+                    HStack {
+                        Text(session.totalMinutes.toMinutes())
+                          .font(.largeTitle)
+                          .foregroundStyle(storeModel.isLiveSessionActive ? .green : .white)
+                        Spacer()
+                        if !session.isDone {
+                            if storeModel.isLiveSessionActive {
+                                Button("Stop") {
+                                    storeModel.stopTimerForLiveSession()
+                                }
+                            } else {
+                                Button("Start") {
+                                    storeModel.startTimerForLiveSession()
+                                }
                             }
                         }
                     }
                 }
+                
+                Section() {
+                    HStack {
+                        Spacer()
+                        Button("Delete Session") {
+                            storeModel.deleteSession(sessionID: session.id)
+                            dismiss()
+                        }.foregroundColor(.red)
+                        Spacer()
+                    }
+                }
             }
+            .sheet(isPresented: $showBuyinsSheet, onDismiss: {
+                showBuyinsSheet = false
+            }, content: {
+                Group {
+                    BuyinsPageSheet(session: session)
+                }
+            })
         }
-        .sheet(isPresented: $showBuyinsSheet, onDismiss: {
-            showBuyinsSheet = false
-        }, content: {
-            Group {
-                BuyinsPageSheet(session: $session)
-            }
-        })
     }
 }
 
 #Preview {
     @State var storeModel = StoreModel.mockEmpty
+    storeModel.selectedSession = storeModel.liveSession
     
     return NavigationStack {
-//        SessionDetailsScreen(session: Binding(get: { storeModel.liveSession! },
-//                                              set: { storeModel.liveSession = $0 }))
-        SessionDetailsScreen(session: $storeModel.sessions[0])
+        SessionDetailsScreen()
             .navigationBarTitleDisplayMode(.inline)
             .preferredColorScheme(.dark)
     }.environmentObject(storeModel)

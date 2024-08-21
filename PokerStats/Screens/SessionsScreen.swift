@@ -9,18 +9,21 @@ import SwiftUI
 
 struct SessionsScreen: View {
     @EnvironmentObject private var storeModel: StoreModel
+
     @State private var showNewSessionSheet = false
     @State private var isNewSessionCreated = false
 
     private func newSessionView() -> some View {
         Group {
-            if storeModel.liveSession != nil {
+            if let liveSession = storeModel.liveSession {
                 Section(header: Text("Live")) {
-                    NavigationLink(destination: SessionDetailsScreen(session: Binding(get: { storeModel.liveSession! },
-                                                                                      set: { storeModel.liveSession = $0 }))
-                    ) {
-                        SessionCell(session: storeModel.liveSession!)
-                    }.listRowBackground(storeModel.liveSession!.isDone ? nil : Color.green)
+                    Button {
+                        storeModel.selectedSession = liveSession
+                        NavManager.navigateToSessionDetails(session: liveSession)
+                    } label: {
+                        SessionCell(session: liveSession)
+                    }.foregroundColor(.black)
+                        .listRowBackground(storeModel.liveSession!.isDone ? nil : Color.green)
                 }
             }
         }
@@ -29,11 +32,12 @@ struct SessionsScreen: View {
     private func historyView() -> some View {
         Section("History") {
             ForEach(storeModel.sessions) { session in
-                let sessionID = storeModel.sessions.firstIndex(where: { $0.id == session.id })!
-                NavigationLink(destination: SessionDetailsScreen(session: $storeModel.sessions[sessionID])
-                ) {
+                Button {
+                    storeModel.selectedSession = session
+                    NavManager.navigateToSessionDetails(session: session)
+                } label: {
                     SessionCell(session: session)
-                }.listRowBackground(session.isDone ? nil : Color.green)
+                }.foregroundColor(.white)
             }.onDelete { offsets in
                 storeModel.sessions.remove(atOffsets: offsets)
             }
@@ -68,46 +72,59 @@ struct SessionsScreen: View {
                         return
                     }
                     
-                    let _ = storeModel.createNewSession(template: templateForNewSession)
+                    storeModel.selectedSession = storeModel.createNewSession(template: templateForNewSession)
                     isNewSessionCreated = true
                 }
             })
+            .navigationDestination(for: Session.self) { _ in
+                SessionDetailsScreen()
+            }
             .navigationDestination(isPresented: $isNewSessionCreated,
                                    destination: {
                 if storeModel.liveSession != nil {
-                    SessionDetailsScreen(session: Binding(get: { storeModel.liveSession! },
-                                                          set: { storeModel.liveSession = $0 }))
+                    SessionDetailsScreen()
                 }
             })
     }
 }
 
 #Preview {
-    NavigationStack {
+    let storeModel = StoreModel.mockEmpty
+    @ObservedObject var navManager = NavManager.shared
+
+    // Stack page sheet not working
+    // Navigation not working
+    return NavigationStack(path: $navManager.path) {
         SessionsScreen()
             .navigationBarTitleDisplayMode(.inline)
-            .preferredColorScheme(.dark)
-    }.environmentObject(StoreModel.mockEmpty)
+    }.preferredColorScheme(.dark)
+        .environmentObject(storeModel)
+        
 }
 
 struct SessionCell: View {
     let session: Session
     
     var body: some View {
-        VStack {
-            HStack {
-                Text("\(session.id):")
-                    .font(.caption)
-                Text(session.startDate.shorten())
-                    .font(.caption)
-                Spacer()
+        HStack {
+            VStack {
+                HStack {
+                    Text("\(session.id):")
+                        .font(.caption)
+                    Text(session.startDate.shorten())
+                        .font(.caption)
+                    Spacer()
+                }
+                HStack {
+                    Text("\(session.template.desc)")
+                        .font(.headline)
+                    Spacer()
+                }
             }
-            HStack {
-                Text("\(session.template.desc)")
-                    .font(.headline)
-                Spacer()
-                Text(session.profit.toDollars())
-            }
+            Text(session.profit.toDollars())
+            Spacer()
+            Image(systemName: "chevron.right")
+                .foregroundColor(.blue)
         }
     }
 }

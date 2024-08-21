@@ -17,6 +17,7 @@
 		FA78F2982C36549A00A4ABA5 /* SessionsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA78F2972C36549A00A4ABA5 /* SessionsScreen.swift */; };
 		FA9B17D12C607E1A00306611 /* BuyinsPageSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9B17D02C607E1A00306611 /* BuyinsPageSheet.swift */; };
 		FADF4AD42C3B6F0200D2498C /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADF4AD32C3B6F0200D2498C /* WebService.swift */; };
+		FAF4082F2C6EF2C600914EFF /* NavManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF4082E2C6EF2C600914EFF /* NavManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		FA78F2972C36549A00A4ABA5 /* SessionsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionsScreen.swift; sourceTree = "<group>"; };
 		FA9B17D02C607E1A00306611 /* BuyinsPageSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyinsPageSheet.swift; sourceTree = "<group>"; };
 		FADF4AD32C3B6F0200D2498C /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
+		FAF4082E2C6EF2C600914EFF /* NavManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				FADF4AD32C3B6F0200D2498C /* WebService.swift */,
+				FAF4082E2C6EF2C600914EFF /* NavManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -189,6 +192,7 @@
 			files = (
 				FA9B17D12C607E1A00306611 /* BuyinsPageSheet.swift in Sources */,
 				FA41FF9E2C38F0C300713CD0 /* LiveSessionPageSheet.swift in Sources */,
+				FAF4082F2C6EF2C600914EFF /* NavManager.swift in Sources */,
 				FADF4AD42C3B6F0200D2498C /* WebService.swift in Sources */,
 				FA41FF9C2C371DF000713CD0 /* SessionDetailsScreen.swift in Sources */,
 				FA78F2862C364A8100A4ABA5 /* PokerStatsApp.swift in Sources */,

@@ -10,10 +10,11 @@ import SwiftUI
 @main
 struct PokerStatsApp: App {
     private var storeModel = StoreModel.mockEmpty
+    @ObservedObject private var navManager = NavManager.shared
     
     var body: some Scene {
         WindowGroup {
-            NavigationStack {
+            NavigationStack(path: $navManager.path) {
                 SessionsScreen()
                     .navigationBarTitleDisplayMode(.inline)
             }.preferredColorScheme(.dark)

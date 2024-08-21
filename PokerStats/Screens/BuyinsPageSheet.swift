@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct BuyinsPageSheet: View {
-    @Binding var session: Session
+    var session: Session
 
     var body: some View {
         VStack {
@@ -27,9 +27,8 @@ struct BuyinsPageSheet: View {
 
 #Preview {
     @State var storeModel = StoreModel.mockEmpty
-    
-    return BuyinsPageSheet(session: Binding(get: { storeModel.liveSession! },
-                                            set: { storeModel.liveSession = $0 }))
+
+    return BuyinsPageSheet(session: storeModel.liveSession!)
         .navigationBarTitleDisplayMode(.inline)
         .preferredColorScheme(.dark)
 }
