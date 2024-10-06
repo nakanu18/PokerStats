@@ -12,32 +12,12 @@ class StoreModel: ObservableObject {
     @Published var liveSession: Session?
     @Published var selectedSession: Session?
     @Published var favoriteTemplates: [SessionTemplate] = [
-        SessionTemplate(id: 0, gameType: .holdEm, limitType: .noLimit, smallBlind: 1, bigBlind: 3, tags: []),
-        SessionTemplate(id: 1, gameType: .holdEm, limitType: .limit, smallBlind: 4, bigBlind: 8, tags: []),
+        SessionTemplate(id: 0, gameType: .holdEm, limitType: .noLimit, smallBlind: 1, bigBlind: 2, maxBuyinsInBB: 100, tags: []),
+        SessionTemplate(id: 1, gameType: .holdEm, limitType: .noLimit, smallBlind: 1, bigBlind: 3, maxBuyinsInBB: 100, tags: []),
+        SessionTemplate(id: 2, gameType: .holdEm, limitType: .noLimit, smallBlind: 2, bigBlind: 5, maxBuyinsInBB: 100, tags: []),
+        SessionTemplate(id: 10, gameType: .holdEm, limitType: .limit, smallBlind: 4, bigBlind: 8, maxBuyinsInBB: nil, tags: []),
     ]
     
-    @Published private var liveSessionTimer: Timer? = nil
-    
-    var isLiveSessionActive: Bool {
-        liveSessionTimer != nil
-    }
-    
-    func startTimerForLiveSession() {
-        stopTimerForLiveSession()
-        
-        guard liveSession != nil else {
-            return
-        }
-        liveSessionTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-            self.liveSession!.totalMinutes += 1/60.0;
-        }
-    }
-    
-    func stopTimerForLiveSession() {
-        liveSessionTimer?.invalidate()
-        liveSessionTimer = nil
-    }
-
     static var mockEmpty: StoreModel {
         let mock = StoreModel()
         let session0 = Session(id: 1,
@@ -51,6 +31,7 @@ class StoreModel: ObservableObject {
                                                          limitType: .noLimit,
                                                          smallBlind: 1, 
                                                          bigBlind: 3,
+                                                         maxBuyinsInBB: 100,
                                                          tags: [.location("Rockford")])
         )
         let session1 = Session(id: 0,
@@ -64,6 +45,7 @@ class StoreModel: ObservableObject {
                                                          limitType: .noLimit,
                                                          smallBlind: 1,
                                                          bigBlind: 2,
+                                                         maxBuyinsInBB: 100,
                                                          tags: [.location("Horseshoe")])
         )
         mock.sessions = [session0, session1]
@@ -86,7 +68,7 @@ class StoreModel: ObservableObject {
     func deleteSession(sessionID: Int) {
         if let liveSession = liveSession, liveSession.id == sessionID {
             print("*** Deleting live session: [\(liveSession.id)] - \(liveSession.template.desc)")
-            stopTimerForLiveSession()
+            TimerManager.shared.stopTimer()
             self.liveSession = nil
         }
     }
@@ -165,10 +147,13 @@ struct SessionTemplate: Identifiable, Codable {
     let limitType: LimitType
     let smallBlind: Int
     let bigBlind: Int
+    let maxBuyinsInBB: Int?
     let tags: [Tag]
     
     var desc: String {
-        "\(stakesDesc) \(gameTypeDesc)"
+        let maxBuyin = maxBuyinsInBB != nil ? "$\(maxBuyinsInBB! * bigBlind)" : "Table Max"
+        
+        return "\(stakesDesc) \(gameTypeDesc) - \(maxBuyin)"
     }
     
     var gameTypeDesc: String {

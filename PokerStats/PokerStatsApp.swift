@@ -19,6 +19,7 @@ struct PokerStatsApp: App {
                     .navigationBarTitleDisplayMode(.inline)
             }.preferredColorScheme(.dark)
                 .environmentObject(storeModel)
+                .environmentObject(TimerManager.shared)
         }
     }
 }

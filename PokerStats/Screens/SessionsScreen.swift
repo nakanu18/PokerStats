@@ -11,7 +11,6 @@ struct SessionsScreen: View {
     @EnvironmentObject private var storeModel: StoreModel
     
     @State private var showNewSessionSheet = false
-    @State private var isNewSessionCreated = false
     
     private func newSessionView() -> some View {
         Group {
@@ -63,23 +62,17 @@ struct SessionsScreen: View {
             }, content: {
                 LiveSessionPageSheet(favoriteTemplates: storeModel.favoriteTemplates) { templateForNewSession in
                     guard let templateForNewSession = templateForNewSession else {
-                        isNewSessionCreated = false
                         return
                     }
                     
                     storeModel.selectedSession = storeModel.createNewSession(template: templateForNewSession)
-                    isNewSessionCreated = true
+                    NavManager.navigateToSessionDetails(session: storeModel.selectedSession!)
                 }
             })
             .navigationDestination(for: Session.self) { _ in
-                SessionDetailsScreen()
+                SessionDetailsScreen(session: Binding(get: { storeModel.selectedSession! },
+                                                      set: { newValue in storeModel.selectedSession = newValue }))
             }
-            .navigationDestination(isPresented: $isNewSessionCreated,
-                                   destination: {
-                if storeModel.liveSession != nil {
-                    SessionDetailsScreen()
-                }
-            })
     }
 }
 
@@ -93,6 +86,7 @@ struct SessionsScreen: View {
             .navigationBarTitleDisplayMode(.inline)
     }.preferredColorScheme(.dark)
         .environmentObject(storeModel)
+        .environmentObject(TimerManager.shared)
 }
 
 struct SessionCell: View {

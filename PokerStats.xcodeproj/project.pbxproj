@@ -16,6 +16,7 @@
 		FA78F2952C364AC800A4ABA5 /* StoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA78F2942C364AC800A4ABA5 /* StoreModel.swift */; };
 		FA78F2982C36549A00A4ABA5 /* SessionsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA78F2972C36549A00A4ABA5 /* SessionsScreen.swift */; };
 		FA9B17D12C607E1A00306611 /* BuyinsPageSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9B17D02C607E1A00306611 /* BuyinsPageSheet.swift */; };
+		FACC62FC2C8AC63C002EBA7C /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACC62FB2C8AC63B002EBA7C /* TimerManager.swift */; };
 		FADF4AD42C3B6F0200D2498C /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADF4AD32C3B6F0200D2498C /* WebService.swift */; };
 		FAF4082F2C6EF2C600914EFF /* NavManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF4082E2C6EF2C600914EFF /* NavManager.swift */; };
 /* End PBXBuildFile section */
@@ -31,6 +32,7 @@
 		FA78F2942C364AC800A4ABA5 /* StoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreModel.swift; sourceTree = "<group>"; };
 		FA78F2972C36549A00A4ABA5 /* SessionsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionsScreen.swift; sourceTree = "<group>"; };
 		FA9B17D02C607E1A00306611 /* BuyinsPageSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyinsPageSheet.swift; sourceTree = "<group>"; };
+		FACC62FB2C8AC63B002EBA7C /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
 		FADF4AD32C3B6F0200D2498C /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
 		FAF4082E2C6EF2C600914EFF /* NavManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -115,6 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				FADF4AD32C3B6F0200D2498C /* WebService.swift */,
+				FACC62FB2C8AC63B002EBA7C /* TimerManager.swift */,
 				FAF4082E2C6EF2C600914EFF /* NavManager.swift */,
 			);
 			path = Services;
@@ -191,6 +194,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA9B17D12C607E1A00306611 /* BuyinsPageSheet.swift in Sources */,
+				FACC62FC2C8AC63C002EBA7C /* TimerManager.swift in Sources */,
 				FA41FF9E2C38F0C300713CD0 /* LiveSessionPageSheet.swift in Sources */,
 				FAF4082F2C6EF2C600914EFF /* NavManager.swift in Sources */,
 				FADF4AD42C3B6F0200D2498C /* WebService.swift in Sources */,

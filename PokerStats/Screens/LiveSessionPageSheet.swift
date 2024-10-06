@@ -14,7 +14,7 @@ struct LiveSessionPageSheet: View {
     var onCreateSession: (_ templateForNewSession: SessionTemplate?) -> Void
 
     var body: some View {
-        VStack{
+        VStack {
             List {
                 Section("Favorites") {
                     ForEach(favoriteTemplates) { fav in
@@ -25,12 +25,22 @@ struct LiveSessionPageSheet: View {
                             }
                     }
                 }
+                Section("New") {
+                    Button("Create New Session") {
+                        // TODO: navigate to new session flow
+                        onCreateSession(nil)
+                        dismiss()
+                    }
+                }
             }
             Button("Cancel") {
                 onCreateSession(nil)
                 dismiss()
             }
         }
+//        .navigationDestination(item: $storeModel.liveSession) { _ in
+//            NewSessionScreen()
+//        }
     }
 }
 
