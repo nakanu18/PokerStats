@@ -14,11 +14,11 @@ class NavManager: ObservableObject {
     private init() {
     }
     
-    static func navigateToSessionDetails(session: Session) {
-        print("*** Navigating to session: [\(session.id)] - \(session.template.desc)")
-        shared.path.append(session)
+    static func navigateToSessionDetails(sessionID: Int) {
+        print("*** Navigating to sessionID: [\(sessionID)]")
+        shared.path.append(sessionID)
     }
-    
+
     static func popToRoot() {
         shared.path.removeLast(shared.path.count)
     }

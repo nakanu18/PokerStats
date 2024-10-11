@@ -17,8 +17,7 @@ struct SessionsScreen: View {
             if let liveSession = storeModel.liveSession {
                 Section(header: Text("Live")) {
                     SessionCell(session: liveSession, isLive: true) {
-                        storeModel.selectedSession = liveSession
-                        NavManager.navigateToSessionDetails(session: liveSession)
+                        NavManager.navigateToSessionDetails(sessionID: liveSession.id)
                     }
                 }
             }
@@ -29,8 +28,7 @@ struct SessionsScreen: View {
         Section("History") {
             ForEach(storeModel.sessions) { session in
                 SessionCell(session: session, isLive: false) {
-                    storeModel.selectedSession = session
-                    NavManager.navigateToSessionDetails(session: session)
+                    NavManager.navigateToSessionDetails(sessionID: session.id)
                 }
             }.onDelete { offsets in
                 storeModel.sessions.remove(atOffsets: offsets)
@@ -65,13 +63,12 @@ struct SessionsScreen: View {
                         return
                     }
                     
-                    storeModel.selectedSession = storeModel.createNewSession(template: templateForNewSession)
-                    NavManager.navigateToSessionDetails(session: storeModel.selectedSession!)
+//                    storeModel.selectedSession = storeModel.createNewSession(template: templateForNewSession)
+//                    NavManager.navigateToSessionDetails(session: storeModel.selectedSession!)
                 }
             })
-            .navigationDestination(for: Session.self) { _ in
-                SessionDetailsScreen(session: Binding(get: { storeModel.selectedSession! },
-                                                      set: { newValue in storeModel.selectedSession = newValue }))
+            .navigationDestination(for: Int.self) { sessionID in
+                SessionDetailsScreen(sessionID: sessionID)
             }
     }
 }

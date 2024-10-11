@@ -10,7 +10,6 @@ import Foundation
 class StoreModel: ObservableObject {
     @Published var sessions: [Session]
     @Published var liveSession: Session?
-    @Published var selectedSession: Session?
     @Published var favoriteTemplates: [SessionTemplate] = [
         SessionTemplate(id: 0, gameType: .holdEm, limitType: .noLimit, smallBlind: 1, bigBlind: 2, maxBuyinsInBB: 100, tags: []),
         SessionTemplate(id: 1, gameType: .holdEm, limitType: .noLimit, smallBlind: 1, bigBlind: 3, maxBuyinsInBB: 100, tags: []),
@@ -65,11 +64,23 @@ class StoreModel: ObservableObject {
         return liveSession!
     }
     
-    func deleteSession(sessionID: Int) {
-        if let liveSession = liveSession, liveSession.id == sessionID {
-            print("*** Deleting live session: [\(liveSession.id)] - \(liveSession.template.desc)")
-            TimerManager.shared.stopTimer()
-            self.liveSession = nil
+    func updateSession(session: Session) {
+        guard let index = sessions.firstIndex(where: { $0.id == session.id }) else {
+            return
+        }
+        
+        print("*** Updating session: [\(session.id)] - \(session.template.desc)")
+        sessions[index] = session
+    }
+    
+    func deleteSession(session: Session) {
+        if session.id == liveSession?.id {
+            print("*** Deleting live session: [\(session.id)] - \(session.template.desc)")
+            // TODO: stop live timer
+            liveSession = nil
+        } else if let index = sessions.firstIndex(where: { $0.id == session.id }) {
+            print("*** Deleting session: [\(session.id)] - \(session.template.desc)")
+            sessions.remove(at: index)
         }
     }
     
