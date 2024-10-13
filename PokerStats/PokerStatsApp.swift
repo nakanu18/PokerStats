@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct PokerStatsApp: App {
     private var storeModel = StoreModel.mockEmpty
-    @ObservedObject private var navManager = NavManager.shared
+    @ObservedObject private var navManager = NavManager()
     
     var body: some Scene {
         WindowGroup {
@@ -19,6 +19,7 @@ struct PokerStatsApp: App {
                     .navigationBarTitleDisplayMode(.inline)
             }.preferredColorScheme(.dark)
                 .environmentObject(storeModel)
+                .environmentObject(navManager)
                 .environmentObject(TimerManager.shared)
         }
     }

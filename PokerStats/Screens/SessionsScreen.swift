@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SessionsScreen: View {
     @EnvironmentObject private var storeModel: StoreModel
+    @EnvironmentObject private var navManager: NavManager
     
     @State private var showNewSessionSheet = false
     
@@ -17,7 +18,7 @@ struct SessionsScreen: View {
             if let liveSession = storeModel.liveSession {
                 Section(header: Text("Live")) {
                     SessionCell(session: liveSession, isLive: true) {
-                        NavManager.navigateToSessionDetails(sessionID: liveSession.id)
+                        navManager.navigateToSessionDetails(sessionID: liveSession.id)
                     }
                 }
             }
@@ -28,7 +29,7 @@ struct SessionsScreen: View {
         Section("History") {
             ForEach(storeModel.sessions) { session in
                 SessionCell(session: session, isLive: false) {
-                    NavManager.navigateToSessionDetails(sessionID: session.id)
+                    navManager.navigateToSessionDetails(sessionID: session.id)
                 }
             }.onDelete { offsets in
                 storeModel.sessions.remove(atOffsets: offsets)
@@ -64,7 +65,7 @@ struct SessionsScreen: View {
                     }
                     
 //                    storeModel.selectedSession = storeModel.createNewSession(template: templateForNewSession)
-//                    NavManager.navigateToSessionDetails(session: storeModel.selectedSession!)
+//                    navManager.navigateToSessionDetails(session: storeModel.selectedSession!)
                 }
             })
             .navigationDestination(for: Int.self) { sessionID in
@@ -75,7 +76,7 @@ struct SessionsScreen: View {
 
 #Preview {
     let storeModel = StoreModel.mockEmpty
-    @ObservedObject var navManager = NavManager.shared
+    @ObservedObject var navManager = NavManager()
     
     // TODO: Navigation not working in preview
     return NavigationStack(path: $navManager.path) {
@@ -83,6 +84,7 @@ struct SessionsScreen: View {
             .navigationBarTitleDisplayMode(.inline)
     }.preferredColorScheme(.dark)
         .environmentObject(storeModel)
+        .environmentObject(navManager)
         .environmentObject(TimerManager.shared)
 }
 

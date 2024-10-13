@@ -7,19 +7,17 @@
 
 import SwiftUI
 
+// Change this from singleton to EnvironmentObject
+// Move the .destinations to main app or to here as a view modifier(?)
 class NavManager: ObservableObject {
-    static let shared = NavManager()
     @Published var path = NavigationPath()
     
-    private init() {
-    }
-    
-    static func navigateToSessionDetails(sessionID: Int) {
+    func navigateToSessionDetails(sessionID: Int) {
         print("*** Navigating to sessionID: [\(sessionID)]")
-        shared.path.append(sessionID)
+        path.append(sessionID)
     }
 
-    static func popToRoot() {
-        shared.path.removeLast(shared.path.count)
+    func popToRoot() {
+        path.removeLast(path.count)
     }
 }
