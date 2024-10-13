@@ -17,6 +17,12 @@ struct PokerStatsApp: App {
             NavigationStack(path: $navManager.path) {
                 SessionsScreen()
                     .navigationBarTitleDisplayMode(.inline)
+                    .navigationDestination(for: Route.self) { route in
+                        switch route {
+                        case .sessionDetails(let sessionID):
+                            return SessionDetailsScreen(sessionID: sessionID)
+                        }
+                    }
             }.preferredColorScheme(.dark)
                 .environmentObject(storeModel)
                 .environmentObject(navManager)

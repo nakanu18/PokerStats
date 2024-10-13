@@ -7,14 +7,16 @@
 
 import SwiftUI
 
-// Change this from singleton to EnvironmentObject
-// Move the .destinations to main app or to here as a view modifier(?)
+enum Route: Codable, Hashable {
+    case sessionDetails(sessionID: Int)
+}
+
 class NavManager: ObservableObject {
     @Published var path = NavigationPath()
     
-    func navigateToSessionDetails(sessionID: Int) {
-        print("*** Navigating to sessionID: [\(sessionID)]")
-        path.append(sessionID)
+    func navigate(route: Route) {
+        print("*** Navigating to: [\(route)]")
+        path.append(route)
     }
 
     func popToRoot() {

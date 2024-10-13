@@ -18,7 +18,7 @@ struct SessionsScreen: View {
             if let liveSession = storeModel.liveSession {
                 Section(header: Text("Live")) {
                     SessionCell(session: liveSession, isLive: true) {
-                        navManager.navigateToSessionDetails(sessionID: liveSession.id)
+                        navManager.navigate(route: .sessionDetails(sessionID: liveSession.id))
                     }
                 }
             }
@@ -29,7 +29,7 @@ struct SessionsScreen: View {
         Section("History") {
             ForEach(storeModel.sessions) { session in
                 SessionCell(session: session, isLive: false) {
-                    navManager.navigateToSessionDetails(sessionID: session.id)
+                    navManager.navigate(route: .sessionDetails(sessionID: session.id))
                 }
             }.onDelete { offsets in
                 storeModel.sessions.remove(atOffsets: offsets)
@@ -68,9 +68,6 @@ struct SessionsScreen: View {
 //                    navManager.navigateToSessionDetails(session: storeModel.selectedSession!)
                 }
             })
-            .navigationDestination(for: Int.self) { sessionID in
-                SessionDetailsScreen(sessionID: sessionID)
-            }
     }
 }
 
