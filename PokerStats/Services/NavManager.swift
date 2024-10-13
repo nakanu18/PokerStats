@@ -14,12 +14,18 @@ enum Route: Codable, Hashable {
 class NavManager: ObservableObject {
     @Published var path = NavigationPath()
     
-    func navigate(route: Route) {
+    func push(route: Route) {
         print("*** Navigating to: [\(route)]")
         path.append(route)
     }
+    
+    func pop() {
+        print("*** Popping current route")
+        path.removeLast()
+    }
 
     func popToRoot() {
+        print("*** Popping to root")
         path.removeLast(path.count)
     }
 }
