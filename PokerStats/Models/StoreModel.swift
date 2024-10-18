@@ -48,7 +48,7 @@ class StoreModel: ObservableObject {
                                                          tags: [.location("Horseshoe")])
         )
         mock.sessions = [session0, session1]
-        mock.liveSession = mock.createNewSession(template: mock.favoriteTemplates[0])
+//        mock.liveSession = mock.createNewSession(template: mock.favoriteTemplates[0])
         return mock
     }
     
@@ -58,10 +58,11 @@ class StoreModel: ObservableObject {
     
     func createNewSession(template: SessionTemplate) -> Session {
         let ID = latestSessionID + 1
-        liveSession = Session(id: ID, name: "", isDone: false, startDate: Date.now, totalMinutes: 0, stack: [0], template: template)
+        let newLiveSession: Session = Session(id: ID, name: "", isDone: false, startDate: Date.now, totalMinutes: 0, stack: [0], template: template)
+        liveSession = newLiveSession
         
-        print("*** Creating new session: [\(liveSession!.id)] - \(liveSession!.template.desc)")
-        return liveSession!
+        print("*** Creating new session: [\(newLiveSession.id)] - \(newLiveSession.template.desc)")
+        return newLiveSession
     }
     
     func updateSession(session: Session) {

@@ -11,7 +11,7 @@ struct LiveSessionPageSheet: View {
     @Environment(\.dismiss) private var dismiss
 
     var favoriteTemplates: [SessionTemplate]
-    var onCreateSession: (_ templateForNewSession: SessionTemplate?) -> Void
+    var onCreateSession: (_ selectedTemplate: SessionTemplate?) -> Void
 
     var body: some View {
         VStack {
@@ -27,10 +27,10 @@ struct LiveSessionPageSheet: View {
                 }
                 Section("New") {
                     Button("Create New Session") {
-                        // TODO: navigate to new session flow
+                        // TODO: Create blank session
                         onCreateSession(nil)
                         dismiss()
-                    }
+                    }.disabled(true)
                 }
             }
             Button("Cancel") {
@@ -38,9 +38,6 @@ struct LiveSessionPageSheet: View {
                 dismiss()
             }
         }
-//        .navigationDestination(item: $storeModel.liveSession) { _ in
-//            NewSessionScreen()
-//        }
     }
 }
 

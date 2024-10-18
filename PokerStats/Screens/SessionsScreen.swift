@@ -59,14 +59,14 @@ struct SessionsScreen: View {
             .sheet(isPresented: $showNewSessionSheet, onDismiss: {
                 showNewSessionSheet = false
             }, content: {
-                LiveSessionPageSheet(favoriteTemplates: storeModel.favoriteTemplates) { templateForNewSession in
-                    guard let templateForNewSession = templateForNewSession else {
+                LiveSessionPageSheet(favoriteTemplates: storeModel.favoriteTemplates) { selectedTemplate in
+                    guard let selectedTemplate = selectedTemplate else {
                         return
                     }
-                    
-//                    storeModel.selectedSession = storeModel.createNewSession(template: templateForNewSession)
-//                    navManager.navigateToSessionDetails(session: storeModel.selectedSession!)
-                }
+                                        
+                    let liveSession = storeModel.createNewSession(template: selectedTemplate)
+                    navManager.push(route: .sessionDetails(sessionID: liveSession.id))
+                }.presentationDetents([.fraction(0.85)])
             })
     }
 }
