@@ -72,7 +72,7 @@ struct SessionsScreen: View {
 }
 
 #Preview {
-    let storeModel = StoreModel.mockEmpty
+    let storeModel = StoreModel.mock()
     @ObservedObject var navManager = NavManager()
     
     // TODO: Navigation not working in preview

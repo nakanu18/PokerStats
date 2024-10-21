@@ -26,7 +26,7 @@ struct BuyinsPageSheet: View {
 }
 
 #Preview {
-    @State var storeModel = StoreModel.mockEmpty
+    @State var storeModel = StoreModel.mock()
 
     return BuyinsPageSheet(session: storeModel.liveSession!)
         .navigationBarTitleDisplayMode(.inline)

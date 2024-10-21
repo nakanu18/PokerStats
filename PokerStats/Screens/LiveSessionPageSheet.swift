@@ -42,7 +42,7 @@ struct LiveSessionPageSheet: View {
 }
 
 #Preview {
-    @State var storeModel = StoreModel.mockEmpty
+    @State var storeModel = StoreModel.mock()
     
     return Group {
         LiveSessionPageSheet(favoriteTemplates: storeModel.favoriteTemplates) { templateForNewSession in

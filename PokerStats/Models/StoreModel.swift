@@ -16,14 +16,15 @@ class StoreModel: ObservableObject {
         SessionTemplate(id: 2, gameType: .holdEm, limitType: .noLimit, smallBlind: 2, bigBlind: 5, maxBuyinsInBB: 100, tags: []),
         SessionTemplate(id: 10, gameType: .holdEm, limitType: .limit, smallBlind: 4, bigBlind: 8, maxBuyinsInBB: nil, tags: []),
     ]
+    @Published var nextSessionID = 0
     
-    static var mockEmpty: StoreModel {
+    static func mock(createLiveSession: Bool = false) -> StoreModel {
         let mock = StoreModel()
         let session0 = Session(id: 1,
                                name: "",
                                isDone: true,
                                startDate: Date.now,
-                               totalMinutes: 105,
+                               totalMinutes: 120,
                                stack: [200, 300],
                                template: SessionTemplate(id: 1,
                                                          gameType: .holdEm,
@@ -37,7 +38,7 @@ class StoreModel: ObservableObject {
                                name: "",
                                isDone: true,
                                startDate: Date.now,
-                               totalMinutes: 105,
+                               totalMinutes: 60,
                                stack: [200],
                                template: SessionTemplate(id: 1,
                                                          gameType: .holdEm,
@@ -48,18 +49,26 @@ class StoreModel: ObservableObject {
                                                          tags: [.location("Horseshoe")])
         )
         mock.sessions = [session0, session1]
-//        mock.liveSession = mock.createNewSession(template: mock.favoriteTemplates[0])
+        if createLiveSession {
+            mock.liveSession = mock.createNewSession(template: mock.favoriteTemplates[0])
+        }
+        mock.nextSessionID = mock.sessions.count + (mock.liveSession != nil ? 1 : 0)
         return mock
     }
     
     init() {
         sessions = []
     }
+
+    //
+    // Actions
+    //
     
     func createNewSession(template: SessionTemplate) -> Session {
-        let ID = latestSessionID + 1
+        let ID = nextSessionID + 1
         let newLiveSession: Session = Session(id: ID, name: "", isDone: false, startDate: Date.now, totalMinutes: 0, stack: [0], template: template)
         liveSession = newLiveSession
+        nextSessionID += 1
         
         print("*** Creating new session: [\(newLiveSession.id)] - \(newLiveSession.template.desc)")
         return newLiveSession
@@ -84,13 +93,6 @@ class StoreModel: ObservableObject {
             sessions.remove(at: index)
         }
     }
-    
-    var latestSessionID: Int {
-        guard let first = sessions.first else {
-            return 0
-        }
-        return first.id
-    }
 }
 
 enum GameType: String, Codable {
@@ -99,6 +101,17 @@ enum GameType: String, Codable {
 
 enum LimitType: String, Codable {
     case noLimit = "No Limit", potLimit = "Pot Limit", limit = "Limit"
+    
+    func shortDesc() -> String {
+        switch self {
+        case .noLimit:
+            return "NL"
+        case .potLimit:
+            return "PL"
+        case .limit:
+            return "L"
+        }
+    }
 }
 
 enum Tag: Codable {    
@@ -169,10 +182,10 @@ struct SessionTemplate: Identifiable, Codable {
     }
     
     var gameTypeDesc: String {
-        "\(limitType.rawValue) \(gameType.rawValue)"
+        "\(limitType.shortDesc()) \(gameType.rawValue)"
     }
     
     var stakesDesc: String {
-        "$\(smallBlind) / \(bigBlind)"
+        "$\(smallBlind) - \(bigBlind)"
     }
 }

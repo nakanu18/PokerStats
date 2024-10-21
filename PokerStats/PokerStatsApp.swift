@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct PokerStatsApp: App {
-    private var storeModel = StoreModel.mockEmpty
+    private var storeModel = StoreModel.mock()
     @ObservedObject private var navManager = NavManager()
     
     var body: some Scene {

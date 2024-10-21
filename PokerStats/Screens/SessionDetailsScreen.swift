@@ -38,7 +38,7 @@ struct SessionDetailsScreen: View {
                     DetailCell(title: "Profit", value: session.profit.toDollars())
                     DetailCell(title: "Profit in BB", value: "\(session.profitInBigBlinds.toOneDecimal()) BB")
                     HStack {
-                        Text("Buyins [\(session.stack.count)]")
+                        Text("Buyins (\(session.stack.count))")
                         Spacer()
                         Text("\(session.totalBuyin.toDollars())")
                         Image(systemName: "chevron.down")
@@ -93,8 +93,7 @@ struct SessionDetailsScreen: View {
 }
 
 #Preview {
-    @State var storeModel = StoreModel.mockEmpty
-//    storeModel.selectedSession = storeModel.liveSession
+    @State var storeModel = StoreModel.mock()
     
     return NavigationStack {
         SessionDetailsScreen(sessionID: 0)
